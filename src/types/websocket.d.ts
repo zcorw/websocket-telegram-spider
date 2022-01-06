@@ -1,0 +1,1 @@
+declare type dataType = "buffer" | "string" | "json";

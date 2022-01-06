@@ -3,8 +3,13 @@
     "module": "es6",
     "noImplicitAny": true,
     "declaration": true,
+    "moduleResolution": "node",
     "sourceMap": true,
-    "outDir": "dist"
+    "outDir": "dist",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
   "include": ["src/**/*"],
   "files": ["src/client.ts"]
