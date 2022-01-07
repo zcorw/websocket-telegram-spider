@@ -19,10 +19,10 @@ const OPTION_SIZE = 32;
 
 const version = Buffer.alloc(VERSION_SIZE);
 version.writeInt16BE(0x01);
-const headSize = Buffer.alloc(HEAD_SIZE);
-headSize.writeInt16BE(0x50);
 
 export const create = (url: string, data: any) => {
+  const headSize = Buffer.alloc(HEAD_SIZE);
+  headSize.writeInt16BE(0x50);
   const id = Buffer.alloc(ID_SIZE);
   id.write(translator.new());
   const urlSize = Buffer.alloc(URL_SIZE);
@@ -49,11 +49,11 @@ export const create = (url: string, data: any) => {
   return Buffer.concat([version, headSize, id, urlSize, bodyType, bodySize, options, urlBuf, bodyBuf]);
 }
 
-export const parse = (buf: Buffer): {id: string, url: string, type: BodyType, data: any} => {
-  const headSize = buf.slice(VERSION_SIZE, utils.sum([VERSION_SIZE, HEAD_SIZE])).readInt16BE();
+export const parse = (buf: Buffer): {id: string, url: string, type: BodyType, data: any, options: any} => {
+  const headSize = buf.slice(HEAD_SIZE_START, utils.sum([HEAD_SIZE_START, HEAD_SIZE])).readInt16BE();
   const head = buf.slice(0, headSize);
-  const body = buf.slice(headSize);
   const id = head.slice(ID_SIZE_START, utils.sum([ID_SIZE_START, ID_SIZE])).toString();
+  const body = buf.slice(headSize);
   const urlSize = head.slice(URL_SIZE_START, utils.sum([URL_SIZE_START, URL_SIZE])).readInt16BE();
   const bodyType = head.slice(BODYTYPE_SIZE_START, utils.sum([BODYTYPE_SIZE_START, BODYTYPE_SIZE])).readInt16BE();
   const bodySize = head.slice(BODYLEN_SIZE_START, utils.sum([BODYLEN_SIZE_START, BODYLEN_SIZE])).readInt16BE();
@@ -67,5 +67,6 @@ export const parse = (buf: Buffer): {id: string, url: string, type: BodyType, da
     url,
     type: bufBody.type,
     data: bufBody.data,
+    options,
   }
 }
