@@ -1,11 +1,5 @@
-import {Buffer} from 'buffer';
-import utils from '@/utils';
+import "module-alias/register";
+import {create, parse} from '@/utils/buffer';
 
-const version = Buffer.from([0x01]);
-const headSize = Buffer.from([0x54]);
-
-export const send = (url: string, data: any) => {
-  const buffer = Buffer.from([]);
-  const id = utils.uuid();
-  
-}
+const buf = create('delete', 'a new happy');
+console.log(parse(buf));

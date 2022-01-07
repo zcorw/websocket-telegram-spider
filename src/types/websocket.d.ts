@@ -1,1 +1,1 @@
-declare type dataType = "buffer" | "string" | "json";
+declare type BodyType = "buffer" | "string" | "json";
