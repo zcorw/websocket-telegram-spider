@@ -22,6 +22,7 @@ wss.on('connection', (ws) => {
   });
   ws.on('close', () => {
     console.log('close');
+    client.close();
   });
   ws.on('error', () => {
     console.log('error')

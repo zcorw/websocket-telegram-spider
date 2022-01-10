@@ -1,8 +1,34 @@
 import short from 'short-uuid';
 import WebSocket from 'ws';
+import {create} from '@/utils/buffer';
 const translator = short();
 
-let clients: { [key: string]: Client } = {};
+let _clients: { [key: string]: Client } = {};
+
+export const clients = {
+  async send(url: string, data: any) {
+    const success: Client[] = [];
+    const fail: Client[] = [];
+    await Promise.all(Object.values(_clients).map((client) => {
+      return new Promise<void>((resolve) => {
+        client.send(url, data)
+        .then(() => success.push(client))
+        .catch(() => fail.push(client))
+        .finally(() => resolve());
+      })
+    }));
+    return {
+      success,
+      fail,
+    }
+  },
+  clear() {
+    Object.values(_clients).forEach((client) => {
+      client.close();
+    });
+    _clients = {};
+  }
+}
 
 export default class Client {
   times: number;
@@ -16,7 +42,7 @@ export default class Client {
     this.clientId = translator.new();
     this.client = ws;
     this.tid = null;
-    clients[this.clientId] = this;
+    _clients[this.clientId] = this;
   }
   start() {
     this.ping();
@@ -38,6 +64,22 @@ export default class Client {
   clear() {
     this.pid = null;
     this.times = 0;
+  }
+  send(url: string, data: any) {
+    const promise = new Promise<void>((resolve, reject) => {
+      this.client.send(create(url, data), (e) => {
+        if (e) {
+          reject(e);
+        } else {
+          resolve();
+        }
+      })
+    })
+    return promise;
+  }
+  close() {
+    _clients[this.clientId] = null;
+    clearTimeout(this.tid);
   }
 }
 module.exports = Client;
