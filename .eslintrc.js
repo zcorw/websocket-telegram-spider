@@ -16,6 +16,14 @@ module.exports = {
     '@typescript-eslint/consistent-type-definitions': [
       "error",
       "interface"
-    ]
+    ],
+    'prettier/prettier': [
+      'error',
+      {
+        endOfLine: 'auto',
+        trailingComma: 'all',
+        arrowParens: 'always',
+      },
+    ],
   }
 }

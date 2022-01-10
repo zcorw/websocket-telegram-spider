@@ -13,5 +13,5 @@
     "esModuleInterop": true
   },
   "include": ["src/**/*"],
-  "files": ["src/client.ts"]
+  "files": ["src/client.ts", "src/server.ts"]
 }
