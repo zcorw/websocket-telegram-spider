@@ -1,6 +1,6 @@
-import short from 'short-uuid';
-import WebSocket from 'ws';
-import {create} from '@/utils/buffer';
+import short from "short-uuid";
+import WebSocket from "ws";
+import { create } from "@/utils/buffer";
 const translator = short();
 
 let _clients: { [key: string]: Client } = {};
@@ -9,26 +9,29 @@ export const clients = {
   async send(url: string, data: any) {
     const success: Client[] = [];
     const fail: Client[] = [];
-    await Promise.all(Object.values(_clients).map((client) => {
-      return new Promise<void>((resolve) => {
-        client.send(url, data)
-        .then(() => success.push(client))
-        .catch(() => fail.push(client))
-        .finally(() => resolve());
+    await Promise.all(
+      Object.values(_clients).map((client) => {
+        return new Promise<void>((resolve) => {
+          client
+            .send(url, data)
+            .then(() => success.push(client))
+            .catch(() => fail.push(client))
+            .finally(() => resolve());
+        });
       })
-    }));
+    );
     return {
       success,
       fail,
-    }
+    };
   },
   clear() {
     Object.values(_clients).forEach((client) => {
       client.close();
     });
     _clients = {};
-  }
-}
+  },
+};
 
 export default class Client {
   times: number;
@@ -50,7 +53,7 @@ export default class Client {
   ping() {
     if (this.pid) {
       if (this.times > 9) {
-        throw new Error('ping超时');
+        throw new Error("ping超时");
       } else {
         this.times++;
       }
@@ -73,8 +76,8 @@ export default class Client {
         } else {
           resolve();
         }
-      })
-    })
+      });
+    });
     return promise;
   }
   close() {

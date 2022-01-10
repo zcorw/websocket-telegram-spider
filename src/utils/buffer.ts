@@ -1,6 +1,6 @@
-import {Buffer} from 'buffer';
-import short from 'short-uuid';
-import utils from '@/utils';
+import { Buffer } from "buffer";
+import short from "short-uuid";
+import utils from "@/utils";
 const translator = short(short.constants.cookieBase90);
 
 const VERSION_SIZE = 4;
@@ -34,7 +34,7 @@ export const create = (url: string, data: any) => {
     bodyType.writeInt16BE(1);
     bodySize.writeInt16BE(data.length);
     bodyBuf = data;
-  } else if (typeof data === 'string') {
+  } else if (typeof data === "string") {
     bodyType.writeInt16BE(2);
     bodySize.writeInt16BE(data.length);
     bodyBuf = Buffer.from(data);
@@ -46,27 +46,52 @@ export const create = (url: string, data: any) => {
   }
   const options = Buffer.alloc(OPTION_SIZE);
   const urlBuf = Buffer.from(url);
-  return Buffer.concat([version, headSize, id, urlSize, bodyType, bodySize, options, urlBuf, bodyBuf]);
-}
+  return Buffer.concat([
+    version,
+    headSize,
+    id,
+    urlSize,
+    bodyType,
+    bodySize,
+    options,
+    urlBuf,
+    bodyBuf,
+  ]);
+};
 
-export const parse = (buf: Buffer): {id: string, url: string, type: BodyType, data: any, options: any} => {
-  const headSize = buf.slice(HEAD_SIZE_START, utils.sum([HEAD_SIZE_START, HEAD_SIZE])).readInt16BE();
+export const parse = (
+  buf: Buffer
+): { id: string; url: string; type: BodyType; data: any; options: any } => {
+  const headSize = buf
+    .slice(HEAD_SIZE_START, utils.sum([HEAD_SIZE_START, HEAD_SIZE]))
+    .readInt16BE();
   const head = buf.slice(0, headSize);
-  const id = head.slice(ID_SIZE_START, utils.sum([ID_SIZE_START, ID_SIZE])).toString();
+  const id = head
+    .slice(ID_SIZE_START, utils.sum([ID_SIZE_START, ID_SIZE]))
+    .toString();
   const body = buf.slice(headSize);
-  const urlSize = head.slice(URL_SIZE_START, utils.sum([URL_SIZE_START, URL_SIZE])).readInt16BE();
-  const bodyType = head.slice(BODYTYPE_SIZE_START, utils.sum([BODYTYPE_SIZE_START, BODYTYPE_SIZE])).readInt16BE();
-  const bodySize = head.slice(BODYLEN_SIZE_START, utils.sum([BODYLEN_SIZE_START, BODYLEN_SIZE])).readInt16BE();
-  const options = head.slice(OPTION_SIZE_START, utils.sum([OPTION_SIZE_START, OPTION_SIZE]));
+  const urlSize = head
+    .slice(URL_SIZE_START, utils.sum([URL_SIZE_START, URL_SIZE]))
+    .readInt16BE();
+  const bodyType = head
+    .slice(BODYTYPE_SIZE_START, utils.sum([BODYTYPE_SIZE_START, BODYTYPE_SIZE]))
+    .readInt16BE();
+  const bodySize = head
+    .slice(BODYLEN_SIZE_START, utils.sum([BODYLEN_SIZE_START, BODYLEN_SIZE]))
+    .readInt16BE();
+  const options = head.slice(
+    OPTION_SIZE_START,
+    utils.sum([OPTION_SIZE_START, OPTION_SIZE])
+  );
   const url = body.slice(0, urlSize).toString();
   const data = body.slice(urlSize);
   const bufBody = utils.bufferParse(bodyType, data);
-  
+
   return {
     id,
     url,
     type: bufBody.type,
     data: bufBody.data,
     options,
-  }
-}
+  };
+};

@@ -1,0 +1,9 @@
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "advancedNewFile.exclude": {
+    "node_modules": true,
+    "dist": true
+  }
+}
