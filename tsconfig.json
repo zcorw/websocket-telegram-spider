@@ -9,9 +9,11 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
+      "@yaml/*": ["./yamlTools/*"],
     },
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "target": "ES5"
   },
-  "include": ["src/**/*", "types", "tests/**/*"],
+  "include": ["src/**/*", "types", "tests/**/*", "yamlTools/**/*"],
   "files": ["src/client.ts", "src/server.ts"]
 }

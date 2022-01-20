@@ -2,11 +2,10 @@ const baseConf = require("./webpack.base");
 module.exports = {
   mode: "development",
   entry: {
-    client: "./src/client.ts",
-    server: "./src/server.ts",
+    anime: "./yamlTools/anime.ts",
   },
   output: {
-    path: require("path").join(__dirname, "dist/websocket"),
+    path: require("path").join(__dirname, "dist/yaml"),
     publicPath: "",
     filename: "[name].js",
     chunkFilename: "[name].chunk.js",

@@ -8,7 +8,8 @@
   "browser": false,
   "scripts": {
     "test": "jest",
-    "start": "webpack --config ./webpack.websocket.js"
+    "start": "webpack --config ./webpack.websocket.js",
+    "yaml": "webpack --config ./webpack.yaml.js"
   },
   "devDependencies": {
     "@babel/core": "^7.16.7",
@@ -47,8 +48,5 @@
     "utf-8-validate": "^5.0.8",
     "ws": "^8.4.0",
     "yaml": "^1.10.2"
-  },
-  "_moduleAliases": {
-    "@": "./dist"
   }
 }

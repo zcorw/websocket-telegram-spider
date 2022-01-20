@@ -1,0 +1,9 @@
+host: https://www.xxx.com/
+url: index.htm
+list:
+  - name: Title1
+    group: Group1
+    id: "5454315"
+  - name: Title2
+    group: Group2
+    id: null

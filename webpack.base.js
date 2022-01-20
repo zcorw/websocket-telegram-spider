@@ -28,6 +28,7 @@ module.exports = {
     extensions: [".ts", ".js"],
     alias: {
       "@": require("path").join(__dirname, "src"),
+      "@yaml": require("path").join(__dirname, "yamlTools"),
     },
   },
   node: {
