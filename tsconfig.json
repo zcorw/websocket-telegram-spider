@@ -8,10 +8,10 @@
     "outDir": "dist",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
     },
     "esModuleInterop": true
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "types", "tests/**/*"],
   "files": ["src/client.ts", "src/server.ts"]
 }
