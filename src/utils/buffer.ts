@@ -20,7 +20,7 @@ const OPTION_SIZE = 32;
 const version = Buffer.alloc(VERSION_SIZE);
 version.writeInt16BE(0x01);
 
-export const create = (url: string, data: any) => {
+export const create = (url: string, data: MessageType["data"]) => {
   const headSize = Buffer.alloc(HEAD_SIZE);
   headSize.writeInt16BE(0x50);
   const id = Buffer.alloc(ID_SIZE);
@@ -60,7 +60,7 @@ export const create = (url: string, data: any) => {
 };
 
 export const parse = (
-  buf: Buffer
+  buf: Buffer,
 ): { id: string; url: string; type: BodyType; data: any; options: any } => {
   const headSize = buf
     .slice(HEAD_SIZE_START, utils.sum([HEAD_SIZE_START, HEAD_SIZE]))
@@ -81,7 +81,7 @@ export const parse = (
     .readInt16BE();
   const options = head.slice(
     OPTION_SIZE_START,
-    utils.sum([OPTION_SIZE_START, OPTION_SIZE])
+    utils.sum([OPTION_SIZE_START, OPTION_SIZE]),
   );
   const url = body.slice(0, urlSize).toString();
   const data = body.slice(urlSize);

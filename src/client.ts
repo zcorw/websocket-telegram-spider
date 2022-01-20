@@ -1,4 +1,3 @@
-import "module-alias/register";
 import WebSocket from "ws";
 import { create } from "@/utils/buffer";
 

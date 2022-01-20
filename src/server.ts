@@ -1,4 +1,3 @@
-import "module-alias/register";
 import { WebSocketServer } from "ws";
 import Client from "@/server/client";
 import { Buffer } from "buffer";
@@ -37,6 +36,6 @@ wss.on("connection", (ws) => {
 });
 
 const anime = new Worker(path.join(__dirname, "../spider/worker/spider.js"));
-anime.on("message", (value: MessageType) => {
+anime.on("message", (value: AnimeWorkerMessage) => {
   telegram.sendText(value.value);
 });

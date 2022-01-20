@@ -18,7 +18,7 @@ export const clients = {
             .catch(() => fail.push(client))
             .finally(() => resolve());
         });
-      })
+      }),
     );
     return {
       success,

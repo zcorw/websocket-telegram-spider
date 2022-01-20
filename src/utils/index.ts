@@ -1,11 +1,6 @@
 import { Buffer } from "buffer";
 
-type BufferBody =
-  | { type: "buffer"; data: Buffer }
-  | { type: "string"; data: string }
-  | { type: "json"; data: any };
-
-function bufferParse(type: number, buf: Buffer): BufferBody {
+function bufferParse(type: number, buf: Buffer): MessageType {
   switch (type) {
     case 1:
       return { type: "buffer", data: buf };
