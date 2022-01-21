@@ -6,5 +6,6 @@ module.exports = {
     "^@/(.*)$": "<rootDir>/src/$1",
     "^@tests/(.*)$": "<rootDir>/tests/$1",
     "^@yaml/(.*)$": "<rootDir>/yamlTools/$1",
+    "^@downloader/(.*)$": "<rootDir>/downloader/$1",
   },
 };

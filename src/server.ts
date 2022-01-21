@@ -5,10 +5,8 @@ import { parse } from "@/utils/buffer";
 import dotenv from "dotenv";
 import { Worker } from "worker_threads";
 import path from "path";
-import telegram from "@/telegram";
 
 dotenv.config();
-telegram.createBot();
 
 const wss = new WebSocketServer({
   port: 3000,
@@ -36,6 +34,3 @@ wss.on("connection", (ws) => {
 });
 
 const anime = new Worker(path.join(__dirname, "../spider/worker/spider.js"));
-anime.on("message", (value: AnimeWorkerMessage) => {
-  telegram.sendText(value.value);
-});

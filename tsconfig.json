@@ -10,10 +10,11 @@
     "paths": {
       "@/*": ["./src/*"],
       "@yaml/*": ["./yamlTools/*"],
+      "@download/*": ["./download/*"],
     },
     "esModuleInterop": true,
     "target": "ES5"
   },
-  "include": ["src/**/*", "types", "tests/**/*", "yamlTools/**/*"],
+  "include": ["src/**/*", "types/**/*", "tests/**/*", "yamlTools/**/*", "download/**/*"],
   "files": ["src/client.ts", "src/server.ts"]
 }
