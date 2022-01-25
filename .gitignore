@@ -3,3 +3,5 @@ dist
 test.js
 .env
 chatid.yml
+files
+config/*

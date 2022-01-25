@@ -15,6 +15,6 @@
     "esModuleInterop": true,
     "target": "ES5"
   },
-  "include": ["src/**/*", "types/**/*", "tests/**/*", "yamlTools/**/*", "download/**/*"],
-  "files": ["src/client.ts", "src/server.ts"]
+  "include": ["src/**/*", "types/**/*", "tests/**/*", "yamlTools/**/*", "download/**/*", "spider/**/*"],
+  "files": ["src/client.ts", "src/server.ts", "spider/anime.ts"]
 }

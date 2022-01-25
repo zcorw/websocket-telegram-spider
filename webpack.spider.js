@@ -2,10 +2,10 @@ const baseConf = require("./webpack.base");
 module.exports = {
   mode: "development",
   entry: {
-    anime: "./yamlTools/anime.ts",
+    anime: "./spider/anime.ts",
   },
   output: {
-    path: require("path").join(__dirname, "dist/yaml"),
+    path: require("path").join(__dirname, "dist/spider"),
     publicPath: "",
     filename: "[name].js",
     chunkFilename: "[name].chunk.js",

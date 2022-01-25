@@ -33,4 +33,4 @@ wss.on("connection", (ws) => {
   });
 });
 
-const anime = new Worker(path.join(__dirname, "../spider/worker/spider.js"));
+const anime = new Worker(path.join(__dirname, "../spider/spider.js"));

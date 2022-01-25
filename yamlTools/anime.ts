@@ -31,6 +31,9 @@ class YamlConf {
   save() {
     yaml.write(this.config, this.path);
   }
+  indexOf(name: string): number {
+    return this.config.list.findIndex((item) => item.name === name);
+  }
 }
 
 export function init(filePath: string) {

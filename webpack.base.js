@@ -29,6 +29,7 @@ module.exports = {
     alias: {
       "@": require("path").join(__dirname, "src"),
       "@yaml": require("path").join(__dirname, "yamlTools"),
+      "@download": require("path").join(__dirname, "download"),
     },
   },
   node: {

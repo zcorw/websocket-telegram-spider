@@ -2,12 +2,15 @@ import Aria2 from "aria2";
 import ws from "ws";
 import nodefetch from "node-fetch";
 import { toBase64, getFileBuffer } from "./utils";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const options = {
-  host: "localhost",
-  port: 6800,
+  host: process.env.ARIA_HOST,
+  port: +process.env.ARIA_PORT,
   secure: false,
-  secret: "123456",
+  secret: process.env.ARIA_TOKEN,
   path: "/jsonrpc",
 };
 
