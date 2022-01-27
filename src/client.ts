@@ -1,8 +1,7 @@
 import WebSocket from "ws";
-import { create, parse } from "@/utils/buffer";
-import { saveFile } from "@download/utils";
-import path from "path";
+import { parse } from "@/utils/buffer";
 import dotenv from "dotenv";
+import clientProcessor from "@/mainProcessor/client";
 
 dotenv.config();
 
@@ -14,12 +13,7 @@ function start() {
 
   ws.on("message", function message(data) {
     if (Buffer.isBuffer(data)) {
-      const message = parse(data);
-      saveFile(
-        message.data,
-        path.join(process.env.ROOT_PATH, "_files", message.params.path),
-        message.params.file,
-      );
+      clientProcessor(parse(data));
     }
   });
 

@@ -13,4 +13,10 @@ declare interface MessageJson {
   data: { [key: string]: any };
 }
 
-declare type MessageType = MessageBuffer | MessageString | MessageJson;
+declare type MessageData = MessageBuffer | MessageString | MessageJson;
+declare type MessageType = MessageData & {
+  id: string;
+  url: string;
+  params: { [key: string]: string };
+  options: any;
+};

@@ -1,13 +1,9 @@
 import { WebSocketServer } from "ws";
-import Client, { clients } from "@/server/client";
+import Client from "@/server/client";
 import { Buffer } from "buffer";
 import { parse } from "@/utils/buffer";
 import dotenv from "dotenv";
-import { Worker } from "worker_threads";
-import path from "path";
-import downloadEvent from "@/events/download";
-import processor from "@/workerProcessor/anime";
-import fs from "fs";
+import animeInit from "@/workers/anime";
 
 dotenv.config();
 
@@ -34,18 +30,4 @@ wss.on("connection", (ws) => {
     console.log("error");
   });
 });
-
-const anime = new Worker(path.join(__dirname, "../spider/crontab.js"));
-anime.on("message", (data: AnimeWorkerMessage) => {
-  processor(data);
-});
-downloadEvent.on("torrent", (value) => {
-  const search = path
-    .normalize(value)
-    .replace(path.join(process.env.ROOT_PATH, "files"), "");
-  const [_searchm, pathname, filename] = search.match(/(.+)[\/\\](.+)$/);
-  clients.send("torrent", fs.readFileSync(value), {
-    path: pathname,
-    file: filename,
-  });
-});
+animeInit();

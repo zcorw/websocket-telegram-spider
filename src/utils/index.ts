@@ -1,6 +1,6 @@
 import { Buffer } from "buffer";
 
-function bufferParse(type: number, buf: Buffer): MessageType {
+function bufferParse(type: number, buf: Buffer): MessageData {
   switch (type) {
     case 1:
       return { type: "buffer", data: buf };

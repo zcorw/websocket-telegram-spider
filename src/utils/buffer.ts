@@ -97,7 +97,7 @@ export const parse = (
 
   return {
     id,
-    url,
+    url: url.replace(/\?.+$/, ""),
     params,
     type: bufBody.type,
     data: bufBody.data,

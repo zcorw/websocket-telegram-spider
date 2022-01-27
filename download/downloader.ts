@@ -39,8 +39,17 @@ export default {
   addUri(uri: string, params: { dir: string }) {
     return aria2.call("addUri", [uri], params);
   },
-  addTorrent(torrentPath: string, params: { dir: string }) {
-    const base64 = toBase64(getFileBuffer(torrentPath));
-    return aria2.call("addTorrent", [base64], params);
+  addTorrent(torrentPath: string | Buffer, params: { dir: string }) {
+    let base64: string;
+    if (typeof torrentPath === "string") {
+      base64 = toBase64(getFileBuffer(torrentPath));
+    } else if (Buffer.isBuffer(torrentPath)) {
+      base64 = toBase64(torrentPath);
+    } else {
+      throw new TypeError("torrent must be a string or a buffer");
+    }
+    return aria2.call("addTorrent", base64, [], {
+      dir: params.dir,
+    });
   },
 };
