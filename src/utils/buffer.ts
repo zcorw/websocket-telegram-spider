@@ -61,7 +61,14 @@ export const create = (url: string, data: MessageType["data"]) => {
 
 export const parse = (
   buf: Buffer,
-): { id: string; url: string; type: BodyType; data: any; options: any } => {
+): {
+  id: string;
+  url: string;
+  params: { [key: string]: string };
+  type: BodyType;
+  data: any;
+  options: any;
+} => {
   const headSize = buf
     .slice(HEAD_SIZE_START, utils.sum([HEAD_SIZE_START, HEAD_SIZE]))
     .readInt16BE();
@@ -84,12 +91,14 @@ export const parse = (
     utils.sum([OPTION_SIZE_START, OPTION_SIZE]),
   );
   const url = body.slice(0, urlSize).toString();
+  const params = utils.decodeParameter(url);
   const data = body.slice(urlSize);
   const bufBody = utils.bufferParse(bodyType, data);
 
   return {
     id,
     url,
+    params,
     type: bufBody.type,
     data: bufBody.data,
     options,

@@ -10,8 +10,8 @@ import event from "./events";
 
 dotenv.config();
 
-const config = init(path.join(__dirname, "../../config/anime.yml"));
-const torrentPath = path.join(__dirname, "../../files/animes");
+const config = init(path.join(process.env.ROOT_PATH, "config/anime.yml"));
+const torrentPath = path.join(process.env.ROOT_PATH, "files/animes");
 
 const processor = (
   $: cheerio.CheerioAPI,
@@ -52,12 +52,19 @@ const torrent = new Crawler({
       console.error(err.stack);
     } else {
       const [filename] = res.options.uri.match(/[^\/]+$/g);
-      await saveFile(
-        res.body as Buffer,
-        path.join(torrentPath, res.options.name),
-        filename,
-      );
-      event.emit("torrent", path.join(torrentPath, res.options.name, filename));
+      try {
+        await saveFile(
+          res.body as Buffer,
+          path.join(torrentPath, res.options.name),
+          filename,
+        );
+        event.emit(
+          "torrent",
+          path.join(torrentPath, res.options.name, filename),
+        );
+      } catch (e) {
+        console.error(e);
+      }
     }
     done();
   },
@@ -89,6 +96,7 @@ const download = new Crawler({
         config.updateId(data.id, index);
       }
     }
+    console.log("采集完成");
     done();
   },
 });
@@ -108,5 +116,6 @@ function getQueueOption(): CrawlerRequestOptions[] {
 }
 
 export default function () {
+  console.log("开始采集");
   download.queue(getQueueOption());
 }

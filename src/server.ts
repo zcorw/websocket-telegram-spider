@@ -1,10 +1,13 @@
 import { WebSocketServer } from "ws";
-import Client from "@/server/client";
+import Client, { clients } from "@/server/client";
 import { Buffer } from "buffer";
 import { parse } from "@/utils/buffer";
 import dotenv from "dotenv";
 import { Worker } from "worker_threads";
 import path from "path";
+import downloadEvent from "@/events/download";
+import processor from "@/workerProcessor/anime";
+import fs from "fs";
 
 dotenv.config();
 
@@ -16,7 +19,6 @@ wss.on("connection", (ws) => {
   ws.on("message", (data, isBinary) => {
     if (Buffer.isBuffer(data)) {
       const body = parse(data);
-      console.log("🚀 ~ file: server.ts ~ line 15 ~ ws.on ~ body", body);
     }
   });
   const client = new Client(ws);
@@ -33,4 +35,17 @@ wss.on("connection", (ws) => {
   });
 });
 
-const anime = new Worker(path.join(__dirname, "../spider/spider.js"));
+const anime = new Worker(path.join(__dirname, "../spider/crontab.js"));
+anime.on("message", (data: AnimeWorkerMessage) => {
+  processor(data);
+});
+downloadEvent.on("torrent", (value) => {
+  const search = path
+    .normalize(value)
+    .replace(path.join(process.env.ROOT_PATH, "files"), "");
+  const [_searchm, pathname, filename] = search.match(/(.+)[\/\\](.+)$/);
+  clients.send("torrent", fs.readFileSync(value), {
+    path: pathname,
+    file: filename,
+  });
+});

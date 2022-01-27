@@ -44,6 +44,7 @@ export const saveFile: (
           resolve();
         });
         writer.write(buffer);
+        writer.end();
       } catch (e) {
         console.error(e);
       }

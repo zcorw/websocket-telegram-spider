@@ -22,4 +22,33 @@ export default {
     return arr.reduce((a, b) => a + b, 0);
   },
   bufferParse,
+  encodeParameter(data?: { [key: string]: any }): string {
+    if (data === undefined) {
+      return "";
+    }
+    const keys = Object.keys(data);
+    const params = keys
+      .reduce<string[]>((res, key) => {
+        return res.concat([`${key}=${encodeURIComponent(data[key])}`]);
+      }, [])
+      .join("&");
+    return `?${params}`;
+  },
+  decodeParameter(url: string): { [key: string]: string } {
+    const reg = url.match(/\?.+$/g);
+    if (reg === null) {
+      return {};
+    }
+    const params = reg[0];
+    return params
+      .replace("?", "")
+      .split("&")
+      .reduce<{ [key: string]: string }>((res, data) => {
+        const [key, value] = data.split("=");
+        return {
+          ...res,
+          [key]: decodeURIComponent(value),
+        };
+      }, {});
+  },
 };

@@ -2,7 +2,7 @@ const baseConf = require("./webpack.base");
 module.exports = {
   mode: "development",
   entry: {
-    anime: "./spider/anime.ts",
+    crontab: "./spider/crontab.ts",
   },
   output: {
     path: require("path").join(__dirname, "dist/spider"),

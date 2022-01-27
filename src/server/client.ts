@@ -1,19 +1,20 @@
 import short from "short-uuid";
 import WebSocket from "ws";
 import { create } from "@/utils/buffer";
+import utils from "@/utils";
 const translator = short();
 
 let _clients: { [key: string]: Client } = {};
 
 export const clients = {
-  async send(url: string, data: any) {
+  async send(url: string, data: any, params?: { [key: string]: any }) {
     const success: Client[] = [];
     const fail: Client[] = [];
     await Promise.all(
       Object.values(_clients).map((client) => {
         return new Promise<void>((resolve) => {
           client
-            .send(url, data)
+            .send(url + utils.encodeParameter(params), data)
             .then(() => success.push(client))
             .catch(() => fail.push(client))
             .finally(() => resolve());
@@ -30,6 +31,9 @@ export const clients = {
       client.close();
     });
     _clients = {};
+  },
+  get length() {
+    return _clients.length;
   },
 };
 
@@ -85,4 +89,3 @@ export default class Client {
     clearTimeout(this.tid);
   }
 }
-module.exports = Client;

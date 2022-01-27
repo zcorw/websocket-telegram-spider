@@ -30,6 +30,8 @@ module.exports = {
       "@": require("path").join(__dirname, "src"),
       "@yaml": require("path").join(__dirname, "yamlTools"),
       "@download": require("path").join(__dirname, "download"),
+      "@file": require("path").join(__dirname, "files"),
+      "@config": require("path").join(__dirname, "config"),
     },
   },
   node: {

@@ -1,15 +1,26 @@
 import WebSocket from "ws";
-import { create } from "@/utils/buffer";
+import { create, parse } from "@/utils/buffer";
+import { saveFile } from "@download/utils";
+import path from "path";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 function start() {
   const ws = new WebSocket("ws://127.0.0.1:3000", { perMessageDeflate: false });
   ws.on("open", () => {
     console.log("open");
-    ws.send(create("test", "this is first"), (e) => console.log(e));
   });
 
   ws.on("message", function message(data) {
-    console.log("received: %s", data);
+    if (Buffer.isBuffer(data)) {
+      const message = parse(data);
+      saveFile(
+        message.data,
+        path.join(process.env.ROOT_PATH, "_files", message.params.path),
+        message.params.file,
+      );
+    }
   });
 
   ws.on("close", () => {
