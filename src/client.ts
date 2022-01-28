@@ -6,7 +6,10 @@ import clientProcessor from "@/mainProcessor/client";
 dotenv.config();
 
 function start() {
-  const ws = new WebSocket("ws://127.0.0.1:3000", { perMessageDeflate: false });
+  const ws = new WebSocket(
+    `ws://${process.env.SERVER_HOST}:${process.env.SERVER_POST}`,
+    { perMessageDeflate: false },
+  );
   ws.on("open", () => {
     console.log("open");
   });
