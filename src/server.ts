@@ -8,7 +8,7 @@ import animeInit from "@/workers/anime";
 dotenv.config();
 
 const wss = new WebSocketServer({
-  port: process.env.SERVER_POST,
+  port: +process.env.SERVER_POST,
 });
 
 wss.on("connection", (ws) => {
