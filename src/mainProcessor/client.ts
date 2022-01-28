@@ -7,7 +7,7 @@ function torrentProcessor(message: MessageType) {
     downloader.addTorrent(message.data, {
       dir: path.posix.join(
         process.env.ARIA_PATH,
-        // message.params.path.replace(/[\/\\]/g, () => "/"),
+        message.params.path.replace(/[\/\\]/g, () => "/"),
       ),
       ...message.params,
     });
