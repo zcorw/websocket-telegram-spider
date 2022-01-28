@@ -12,6 +12,7 @@ const wss = new WebSocketServer({
 });
 
 wss.on("connection", (ws) => {
+  console.log("a client enter");
   ws.on("message", (data, isBinary) => {
     if (Buffer.isBuffer(data)) {
       const body = parse(data);
