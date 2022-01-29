@@ -2,7 +2,7 @@ const baseConf = require("./webpack.base");
 module.exports = {
   mode: "development",
   entry: {
-    downloader: "./download/downloader.ts",
+    crontab: "./download/crontab.ts",
   },
   output: {
     path: require("path").join(__dirname, "dist/download"),

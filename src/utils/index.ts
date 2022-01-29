@@ -51,4 +51,16 @@ export default {
         };
       }, {});
   },
+  debounce(fn: (...params: any[]) => void, delay: number) {
+    let timer: NodeJS.Timeout; // 维护一个 timer
+    return function (...params: any[]) {
+      let _this = this; // 取debounce执行作用域的this
+      if (timer) {
+        clearTimeout(timer);
+      }
+      timer = setTimeout(function () {
+        fn.apply(_this, params); // 用apply指向调用debounce的对象，相当于_this.fn(args);
+      }, delay);
+    };
+  },
 };

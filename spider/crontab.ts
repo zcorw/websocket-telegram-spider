@@ -12,9 +12,11 @@ if (!isMainThread) {
   });
 }
 
-schedule.scheduleJob("0 15 * * * *", function () {
-  spider();
-});
+if (!isMainThread)
+  schedule.scheduleJob("15,45 * * * * *", function () {
+    spider();
+  });
+else spider();
 
 // schedule.scheduleJob('0 0 1 * * *', function(){
 //   download();

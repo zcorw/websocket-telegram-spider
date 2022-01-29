@@ -7,11 +7,16 @@ import path from "path";
 import { saveFile } from "@download/utils";
 import dotenv from "dotenv";
 import event from "./events";
+import utils from "./utils";
 
 dotenv.config();
 
 const config = init(path.join(process.env.ROOT_PATH, "config/anime.yml"));
 const torrentPath = path.join(process.env.ROOT_PATH, "files/animes");
+const errorQueue: { download: string[]; torrent: string[] } = {
+  download: [],
+  torrent: [],
+};
 
 const processor = (
   $: cheerio.CheerioAPI,
@@ -43,6 +48,7 @@ const torrent = new Crawler({
   encoding: null,
   jQuery: false,
   proxy: +process.env.SPIDER_PROXY ? "sock5://127.0.0.1:7890" : undefined,
+  rateLimit: 10,
   callback: async function (
     err: Error,
     res: CrawlerRequestResponse,
@@ -51,7 +57,7 @@ const torrent = new Crawler({
     if (err) {
       console.error(err.stack);
     } else {
-      const [filename] = res.options.uri.match(/[^\/]+$/g);
+      const filename = utils.getFilename(res.headers, res.request.uri);
       try {
         await saveFile(
           res.body as Buffer,

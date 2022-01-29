@@ -1,10 +1,34 @@
 import Aria2 from "aria2";
 import ws from "ws";
 import nodefetch from "node-fetch";
-import { toBase64, getFileBuffer } from "./utils";
+import { toBase64, getFileBuffer, debounce } from "./utils";
 import dotenv from "dotenv";
 
 dotenv.config();
+
+type Aria2Methods =
+  | "addUri"
+  | "addTorrent"
+  | "addMetalink"
+  | "remove"
+  | "forceRemove"
+  | "pause"
+  | "pauseAll"
+  | "unpause"
+  | "tellStatus";
+
+let _config: [method: Aria2Methods, ...params: any[]][] = [];
+const addFile = debounce(() => {
+  console.log(
+    "_config",
+    _config.map((conf) => conf[conf.length - 1].dir),
+  );
+  Promise.all(aria2.batch(_config))
+    .then(() => {
+      _config = [];
+    })
+    .catch((e) => console.error(e));
+}, 5000);
 
 const options = {
   host: process.env.ARIA_HOST,
@@ -35,9 +59,14 @@ function connect() {
   aria2.open().catch((e) => {});
 }
 connect();
+
+function cache(method: Aria2Methods, ...params: any[]) {
+  _config.push([method, ...params]);
+  addFile();
+}
 export default {
   addUri(uri: string, params: { dir: string }) {
-    return aria2.call("addUri", [uri], params);
+    cache("addUri", [uri], params);
   },
   addTorrent(torrentPath: string | Buffer, params: { dir: string }) {
     let base64: string;
@@ -48,7 +77,7 @@ export default {
     } else {
       throw new TypeError("torrent must be a string or a buffer");
     }
-    return aria2.call("addTorrent", base64, [], {
+    cache("addTorrent", base64, [], {
       dir: params.dir,
     });
   },
