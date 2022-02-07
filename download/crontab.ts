@@ -5,7 +5,7 @@ import { parentPort, isMainThread } from "worker_threads";
 
 dotenv.config();
 if (!isMainThread)
-  schedule.scheduleJob("0 15 * * * *", function () {
+  schedule.scheduleJob("0 0 4 * * *", function () {
     torrentDownload();
   });
 else torrentDownload();

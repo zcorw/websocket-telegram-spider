@@ -13,7 +13,7 @@ if (!isMainThread) {
 }
 
 if (!isMainThread)
-  schedule.scheduleJob("15,45 * * * * *", function () {
+  schedule.scheduleJob("0 15 * * * *", function () {
     spider();
   });
 else spider();
