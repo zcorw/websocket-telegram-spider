@@ -2,6 +2,7 @@ import WebSocket from "ws";
 import { parse } from "@/utils/buffer";
 import dotenv from "dotenv";
 import clientProcessor from "@/mainProcessor/client";
+import downloadInit from "@/workers/download";
 
 dotenv.config();
 
@@ -29,3 +30,4 @@ function start() {
   });
 }
 start();
+downloadInit();
