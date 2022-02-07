@@ -1,5 +1,5 @@
 import downloader from "@download/downloader";
-import { readFileList } from "@download/utils";
+import { readFileList, delDirFiles } from "@download/utils";
 import path from "path";
 import dotenv from "dotenv";
 
@@ -20,4 +20,7 @@ export default function torrentDownload() {
       ),
     });
   });
+  setTimeout(() => {
+    delDirFiles(path.join(process.env.ROOT_PATH, "files"));
+  }, 5000);
 }

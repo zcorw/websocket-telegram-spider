@@ -80,3 +80,19 @@ export const debounce = (fn: (...params: any[]) => void, delay: number) => {
     }, delay);
   };
 };
+
+export const delDirFiles = (dirPath: string, isDelDir = false) => {
+  if (fs.existsSync(dirPath)) {
+    const files = fs.readdirSync(dirPath);
+    files.forEach((file) => {
+      const fullPath = path.join(dirPath, file);
+      const stat = fs.statSync(fullPath);
+      if (stat.isDirectory()) {
+        delDirFiles(fullPath, true);
+      } else {
+        fs.unlinkSync(fullPath);
+      }
+    });
+    if (isDelDir) fs.rmdirSync(dirPath);
+  }
+};

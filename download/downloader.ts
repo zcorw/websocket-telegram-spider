@@ -19,10 +19,6 @@ type Aria2Methods =
 
 let _config: [method: Aria2Methods, ...params: any[]][] = [];
 const addFile = debounce(() => {
-  console.log(
-    "_config",
-    _config.map((conf) => conf[conf.length - 1].dir),
-  );
   Promise.all(aria2.batch(_config))
     .then(() => {
       _config = [];
