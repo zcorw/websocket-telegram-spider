@@ -1,7 +1,13 @@
 import schedule from "node-schedule";
 import { parentPort, isMainThread } from "worker_threads";
-import spider from "./anime";
+import path from "path";
+import spider from "./crontabs";
 import events from "./events";
+import utils from "./utils";
+
+const crontabs = utils.getCrontabs(
+  path.join(process.env.ROOT_PATH, "config/spider.cron"),
+);
 
 if (!isMainThread) {
   events.on("updated", (name) => {
@@ -13,10 +19,16 @@ if (!isMainThread) {
 }
 
 if (!isMainThread)
-  schedule.scheduleJob("0 15 * * * *", function () {
-    spider();
+  crontabs.forEach((cron) => {
+    if (
+      typeof (spider as { [key: string]: () => void })[cron.work] === "function"
+    )
+      schedule.scheduleJob(
+        cron.time,
+        (spider as { [key: string]: () => void })[cron.work],
+      );
   });
-else spider();
+else spider["anime"]();
 
 // schedule.scheduleJob('0 0 1 * * *', function(){
 //   download();

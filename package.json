@@ -8,8 +8,8 @@
   "browser": false,
   "scripts": {
     "test": "jest",
-    "start": "webpack --config ./webpack.websocket.js",
-    "yaml": "webpack --config ./webpack.yaml.js"
+    "client": "webpack --config ./webpack.websocket.js && webpack --config ./webpack.download.js",
+    "server": "webpack --config ./webpack.websocket.js && webpack --config ./webpack.spider.js"
   },
   "devDependencies": {
     "@babel/core": "^7.16.7",

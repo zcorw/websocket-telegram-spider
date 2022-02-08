@@ -6,8 +6,8 @@ import { init } from "@yaml/anime";
 import path from "path";
 import { saveFile } from "@download/utils";
 import dotenv from "dotenv";
-import event from "./events";
-import utils from "./utils";
+import event from "../events";
+import utils from "../utils";
 
 dotenv.config();
 

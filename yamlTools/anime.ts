@@ -4,8 +4,11 @@ class YamlConf {
   config: AnimeConfig;
   path: string;
   constructor(filePath: string) {
-    this.config = yaml.parse(filePath);
     this.path = filePath;
+    this.read();
+  }
+  private read() {
+    this.config = yaml.parse(this.path);
   }
   get host(): string {
     return this.config.host;
@@ -14,6 +17,7 @@ class YamlConf {
     return this.config.host + this.config.url;
   }
   forEach(callback: (item: AnimeItem, i: number) => void) {
+    this.read();
     this.config.list.forEach(callback);
   }
   push(item: AnimeItem) {

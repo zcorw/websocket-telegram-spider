@@ -16,5 +16,5 @@
     "target": "ES5"
   },
   "include": ["src/**/*", "types/**/*", "tests/**/*", "yamlTools/**/*", "download/**/*", "spider/**/*"],
-  "files": ["src/client.ts", "src/server.ts", "spider/anime.ts"]
+  "files": ["src/client.ts", "src/server.ts"]
 }

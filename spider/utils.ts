@@ -1,5 +1,6 @@
 import { CrawlerRequestResponse, Headers } from "crawler";
 import { Url } from "url";
+import fs from "fs";
 
 export default {
   getFilename(headers: Headers, url: Url) {
@@ -22,5 +23,16 @@ export default {
   },
   toEqual(reponse: CrawlerRequestResponse) {
     return reponse.body.length === +reponse.headers["content-length"];
+  },
+  getCrontabs(filePath: string): { time: string; work: string }[] {
+    const context = fs.readFileSync(filePath, "utf-8");
+    const contexts = context.split("\r\n");
+    return contexts.map((c) => {
+      const res = c.match(/((\S+\s+){4}\S+)\s+(\w+)/);
+      return {
+        time: res[1],
+        work: res[3],
+      };
+    });
   },
 };

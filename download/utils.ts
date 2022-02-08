@@ -96,3 +96,17 @@ export const delDirFiles = (dirPath: string, isDelDir = false) => {
     if (isDelDir) fs.rmdirSync(dirPath);
   }
 };
+
+export const getCrontabs: (
+  filePath: string,
+) => { time: string; work: string }[] = (filePath) => {
+  const context = fs.readFileSync(filePath, "utf-8");
+  const contexts = context.split("\r\n");
+  return contexts.map((c) => {
+    const res = c.match(/((\S+\s+){4}\S+)\s+(\w+)/);
+    return {
+      time: res[1],
+      work: res[3],
+    };
+  });
+};
