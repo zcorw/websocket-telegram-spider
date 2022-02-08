@@ -103,7 +103,7 @@ export const getCrontabs: (
   const context = fs.readFileSync(filePath, "utf-8");
   const contexts = context.split("\r\n");
   return contexts.map((c) => {
-    const res = c.match(/((\S+\s+){4}\S+)\s+(\w+)/);
+    const res = c.match(/((\S+\s+){5}\S+)\s+(\w+)/);
     return {
       time: res[1],
       work: res[3],
